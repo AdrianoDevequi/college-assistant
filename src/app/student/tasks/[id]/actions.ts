@@ -24,7 +24,7 @@ export async function completeTaskAction(assignmentId: string, answers: Record<n
         revalidatePath(`/student/tasks/${assignmentId}`);
 
         return { success: true };
-    } catch (e: any) {
+    } catch (e) {
         console.log("Server Action Error:", e);
         throw e; // Re-throw to be caught by client
     }

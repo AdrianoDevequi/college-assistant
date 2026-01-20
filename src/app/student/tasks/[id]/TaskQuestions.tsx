@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { completeTaskAction } from "./actions"; // We'll move the server action here or create a new one
 
-export default function TaskQuestions({ content, assignmentId, initialStatus, initialAnswers, rawAnswers }: { content: any, assignmentId: string, initialStatus: string, initialAnswers?: any, rawAnswers?: string | null }) {
+export default function TaskQuestions({ content, assignmentId, initialStatus, initialAnswers, rawAnswers }: { content: { questions: { question: string; options: string[]; answer: string }[] }, assignmentId: string, initialStatus: string, initialAnswers?: Record<string, string>, rawAnswers?: string | null }) {
 
     // Fallback: If initialAnswers is missing, try to parse rawAnswers
     const parsedAnswers = initialAnswers || (rawAnswers ? JSON.parse(rawAnswers) : {});
 
     // Normalize initial answers to string keys
-    const normalizedAnswers = parsedAnswers ? Object.keys(parsedAnswers).reduce((acc: any, key) => {
+    const normalizedAnswers = parsedAnswers ? Object.keys(parsedAnswers).reduce((acc: Record<string, string>, key) => {
         acc[String(key)] = parsedAnswers[key];
         return acc;
     }, {}) : {};
@@ -27,7 +27,7 @@ export default function TaskQuestions({ content, assignmentId, initialStatus, in
     };
 
     const isFormValid = content.questions?.length > 0 &&
-        content.questions.every((_: any, i: number) => answers[String(i)]);
+        content.questions.every((_: unknown, i: number) => answers[String(i)]);
 
     const handleSubmit = async () => {
         if (!isFormValid) {
@@ -54,7 +54,7 @@ export default function TaskQuestions({ content, assignmentId, initialStatus, in
                     <CardTitle>Questões</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-8">
-                    {content.questions?.map((q: any, i: number) => (
+                    {content.questions?.map((q: { question: string; options: string[]; answer: string }, i: number) => (
                         <div key={i} className="p-4 border rounded bg-white">
                             <p className="font-semibold mb-4 text-lg">{i + 1}. {q.question}</p>
 
