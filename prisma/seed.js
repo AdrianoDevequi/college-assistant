@@ -1,11 +1,13 @@
-
-import { PrismaClient, Role } from "@prisma/client";
-import { hash } from "bcryptjs";
+const { PrismaClient } = require('@prisma/client');
+const { hash } = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
 async function main() {
+    // Generate hashed password
     const password = await hash("admin123", 12);
+
+    // Upsert Admin User
     const user = await prisma.user.upsert({
         where: { email: "admin@college.com" },
         update: {},
@@ -13,7 +15,7 @@ async function main() {
             email: "admin@college.com",
             name: "Admin User",
             password,
-            role: Role.ADMIN,
+            role: "ADMIN", // Using string directly as we are in JS
         },
     });
     console.log({ user });
