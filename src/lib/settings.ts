@@ -10,7 +10,7 @@ export const SETTINGS_KEYS = {
 export async function getSetting(key: string): Promise<string | undefined> {
     try {
         // 1. Try DB
-        // @ts-expect-error - SystemSettings might not be generated yet
+
         const setting = await prisma.systemSettings.findUnique({
             where: { key },
         });
@@ -25,7 +25,7 @@ export async function getSetting(key: string): Promise<string | undefined> {
 }
 
 export async function setSetting(key: string, value: string) {
-    // @ts-expect-error - Prisma client type mismatch
+
     return prisma.systemSettings.upsert({
         where: { key },
         update: { value },
