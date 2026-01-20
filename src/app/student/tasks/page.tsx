@@ -31,11 +31,11 @@ export default async function StudentTasksPage() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-800">My Tasks</h1>
+            <h1 className="text-2xl font-bold text-gray-800">Minhas Tarefas</h1>
 
             <div className="grid gap-4">
                 {assignments.length === 0 ? (
-                    <p className="text-gray-500">No tasks assigned yet.</p>
+                    <p className="text-gray-500">Nenhuma tarefa atribuída ainda.</p>
                 ) : (
                     assignments.map((assignment) => (
                         <Card key={assignment.id} className="hover:shadow-lg transition-shadow">
@@ -43,20 +43,20 @@ export default async function StudentTasksPage() {
                                 <div className="flex justify-between items-start">
                                     <CardTitle className="text-lg">{assignment.task.theme}</CardTitle>
                                     <Badge variant={assignment.status === "COMPLETED" ? "secondary" : "default"}>
-                                        {assignment.status}
+                                        {assignment.status === "COMPLETED" ? "Concluída" : "Pendente"}
                                     </Badge>
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-gray-500 text-sm">Level: {assignment.task.targetLevel}</p>
+                                <p className="text-gray-500 text-sm">Nível: {assignment.task.targetLevel}</p>
                                 <p className="text-gray-400 text-xs mt-1">
-                                    Assigned: {new Date(assignment.sentAt).toLocaleDateString()}
+                                    Atribuído: {new Date(assignment.sentAt).toLocaleDateString("pt-BR")}
                                 </p>
                             </CardContent>
                             <CardFooter>
                                 <Link href={`/student/tasks/${assignment.id}`} className="w-full">
                                     <Button className="w-full">
-                                        {assignment.status === "COMPLETED" ? "Review Task" : "Start Task"}
+                                        {assignment.status === "COMPLETED" ? "Revisar Tarefa" : "Iniciar Tarefa"}
                                     </Button>
                                 </Link>
                             </CardFooter>

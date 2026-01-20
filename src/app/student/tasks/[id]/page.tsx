@@ -30,7 +30,6 @@ async function getAssignment(id: string) {
 }
 
 export default async function TaskDetailPage({ params }: { params: { id: string } }) {
-    // Await params correctly for Next 15+ (although we initialized 14+, good practice)
     const { id } = await params;
     const assignment = await getAssignment(id);
 
@@ -55,19 +54,19 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
     return (
         <div className="space-y-6">
             <Link href="/student/tasks" className="flex items-center text-gray-500 hover:text-gray-800">
-                <ArrowLeft size={16} className="mr-2" /> Back to Tasks
+                <ArrowLeft size={16} className="mr-2" /> Voltar para Tarefas
             </Link>
 
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">{content.title}</h1>
                 <Badge variant={assignment.status === "COMPLETED" ? "secondary" : "default"}>
-                    {assignment.status}
+                    {assignment.status === "COMPLETED" ? "Concluída" : "Pendente"}
                 </Badge>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Introduction</CardTitle>
+                    <CardTitle>Introdução</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-gray-700">{content.introduction}</p>
@@ -76,7 +75,7 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Reading / Content</CardTitle>
+                    <CardTitle>Leitura / Conteúdo</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="prose max-w-none text-gray-800 bg-gray-50 p-6 rounded-lg whitespace-pre-wrap">
@@ -87,7 +86,7 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Questions</CardTitle>
+                    <CardTitle>Questões</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {content.questions?.map((q: any, i: number) => (
@@ -100,7 +99,7 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
                             </ul>
                             {assignment.status === "COMPLETED" && (
                                 <div className="mt-3 text-green-600 text-sm font-medium">
-                                    Answer: {q.answer}
+                                    Resposta Correta: {q.answer}
                                 </div>
                             )}
                         </div>
@@ -111,7 +110,7 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
             {assignment.status !== "COMPLETED" && (
                 <form action={completeTask} className="flex justify-end">
                     <Button type="submit" size="lg" className="bg-green-600 hover:bg-green-700">
-                        Mark as Completed
+                        Marcar como Concluída
                     </Button>
                 </form>
             )}

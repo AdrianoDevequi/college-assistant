@@ -4,8 +4,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function getStats() {
-    // In a real scenario, these would connect to the DB. 
-    // Wrapping in try/catch to avoid crash if DB not reachable
     try {
         const studentCount = await prisma.user.count({ where: { role: "STUDENT" } });
         const taskCount = await prisma.task.count();
@@ -26,7 +24,7 @@ export default async function AdminDashboard() {
             <div className="grid gap-4 md:grid-cols-3">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+                        <CardTitle className="text-sm font-medium">Total de Alunos</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.studentCount}</div>
@@ -34,7 +32,7 @@ export default async function AdminDashboard() {
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Tasks Generated</CardTitle>
+                        <CardTitle className="text-sm font-medium">Tarefas Geradas</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.taskCount}</div>
@@ -43,7 +41,7 @@ export default async function AdminDashboard() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Pending Assignments
+                            Tarefas Pendentes
                         </CardTitle>
                     </CardHeader>
                     <CardContent>

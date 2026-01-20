@@ -31,10 +31,10 @@ export default async function StudentsPage() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-3xl font-bold tracking-tight">Students</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Alunos</h2>
                 <Link href="/admin/students/new">
                     <Button>
-                        <Plus className="mr-2 h-4 w-4" /> Add Student
+                        <Plus className="mr-2 h-4 w-4" /> Novo Aluno
                     </Button>
                 </Link>
             </div>
@@ -43,17 +43,17 @@ export default async function StudentsPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Name</TableHead>
+                            <TableHead>Nome</TableHead>
                             <TableHead>Email</TableHead>
-                            <TableHead>Level</TableHead>
-                            <TableHead>Interest</TableHead>
-                            <TableHead>Phone</TableHead>
+                            <TableHead>Nível</TableHead>
+                            <TableHead>Interesse</TableHead>
+                            <TableHead>Telefone</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {students.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center">No students found.</TableCell>
+                                <TableCell colSpan={5} className="text-center">Nenhum aluno encontrado.</TableCell>
                             </TableRow>
                         ) : (
                             students.map((student) => (

@@ -1,79 +1,79 @@
 # College Assistant 🎓🤖
 
-An AI-powered personalized English learning assistant designed for college students. This system allows administrators to generate tailored English exercises based on student proficiency levels (CEFR A1-C2) and specific academic themes (e.g., Agronomy, Business, Law), and automatically assigns them to students with WhatsApp notifications.
+Um assistente pessoal de aprendizado de inglês impulsionado por IA, projetado para estudantes universitários. Este sistema permite que administradores gerem exercícios de inglês personalizados com base no nível de proficiência dos alunos (CEFR A1-C2) e temas acadêmicos específicos (ex: Agronomia, Direito, Negócios), atribuindo-os automaticamente aos alunos com notificações via WhatsApp.
 
-## 🚀 Features
+## 🚀 Funcionalidades
 
-### 👨‍🏫 Admin Dashboard
-*   **Student Management**: Register and manage students, tracking their English level (A1-C2) and contact information.
-*   **AI Task Generator**: Powered by **Google Gemini**, creating infinite personalized content.
-    *   Select **Theme** (e.g., "Sustainable Agriculture", "Contract Law").
-    *   Select **Level** (A1, A2, B1, B2, C1, C2).
-    *   Review and edit generated content before publishing.
-*   **Automatic Distribution**: Assigns tasks to all students matching the selected level.
+### 👨‍🏫 Painel Administrativo
+*   **Gestão de Alunos**: Cadastre e gerencie alunos, rastreando seu nível de inglês (A1-C2) e informações de contato.
+*   **Gerador de Tarefas com IA**: Impulsionado pelo **Google Gemini**, criando conteúdo personalizado infinito.
+    *   Selecione o **Tema** (ex: "Agricultura Sustentável", "Direito Contratual").
+    *   Selecione o **Nível** (A1, A2, B1, B2, C1, C2).
+    *   Revise e edite o conteúdo gerado antes de publicar.
+*   **Distribuição Automática**: Atribui tarefas a todos os alunos que correspondem ao nível selecionado.
 
-### 🎓 Student Portal
-*   **Personalized Feed**: Students see only tasks assigned to them.
-*   **Interactive Learning**: Read texts and answer questions directly on the platform.
-*   **Progress Tracking**: Mark tasks as completed and review correct answers.
+### 🎓 Portal do Aluno
+*   **Feed Personalizado**: Os alunos veem apenas as tarefas atribuídas a eles.
+*   **Aprendizado Interativo**: Leia textos e responda a perguntas diretamente na plataforma.
+*   **Acompanhamento de Progresso**: Marque tarefas como concluídas e revise as respostas corretas.
 
-### 📱 Integrations
-*   **Google Gemini AI**: Generates contextually relevant reading passages and quizzes.
-*   **Evolution API (WhatsApp)**: Sends instant notifications to students when a new task is available, including a direct link to the exercise.
+### 📱 Integrações
+*   **Google Gemini AI**: Gera textos de leitura e questionários contextualmente relevantes.
+*   **Evolution API (WhatsApp)**: Envia notificações instantâneas aos alunos quando uma nova tarefa está disponível, incluindo um link direto para o exercício.
 
-## 🛠 Tech Stack
+## 🛠 Tecnologias Utilizadas
 
 *   **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
-*   **Language**: TypeScript
-*   **Styling**: Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/)
-*   **Database**: MariaDB / MySQL (via [Prisma ORM](https://www.prisma.io/))
-*   **Auth**: NextAuth.js (Credentials)
+*   **Linguagem**: TypeScript
+*   **Estilização**: Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/)
+*   **Banco de Dados**: MariaDB / MySQL (via [Prisma ORM](https://www.prisma.io/))
+*   **Autenticação**: NextAuth.js (Credentials)
 
-## 📦 Installation & Setup
+## 📦 Instalação e Configuração
 
-1.  **Clone the repository**
+1.  **Clone o repositório**
     ```bash
     git clone https://github.com/AdrianoDevequi/college-assistant.git
     cd college-assistant
     ```
 
-2.  **Install dependencies**
+2.  **Instale as dependências**
     ```bash
     npm install
     ```
 
-3.  **Environment Variables**
-    Create a `.env` file in the root directory:
+3.  **Variáveis de Ambiente**
+    Crie um arquivo `.env` no diretório raiz:
     ```env
     # Database
     DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
 
     # NextAuth
-    NEXTAUTH_SECRET="your-secret-key"
+    NEXTAUTH_SECRET="sua-chave-secreta"
     NEXTAUTH_URL="http://localhost:3000"
 
     # Google Gemini AI
-    GEMINI_API_KEY="your-gemini-api-key"
+    GEMINI_API_KEY="sua-chave-api-gemini"
 
     # Evolution API (WhatsApp)
-    EVOLUTION_API_URL="https://your-evolution-api.com"
-    EVOLUTION_API_KEY="your-evolution-api-key"
+    EVOLUTION_API_URL="https://sua-evolution-api.com"
+    EVOLUTION_API_KEY="sua-chave-api-evolution"
     EVOLUTION_INSTANCE_NAME="college_assistant"
     ```
 
-4.  **Setup Database**
+4.  **Configurar Banco de Dados**
     ```bash
     npx prisma generate
     npx prisma migrate dev --name init
     ```
 
-    *Tip: You can seed the database with an initial Admin user by running `npx tsx prisma/seed.ts` (Check `prisma/seed.ts` for default credentials).*
+    *Dica: Você pode popular o banco de dados com um usuário Admin inicial acessando `http://localhost:3000/api/setup` após iniciar o servidor.*
 
-5.  **Run Development Server**
+5.  **Rodar Servidor de Desenvolvimento**
     ```bash
     npm run dev
     ```
 
-## 🤝 Contributing
+## 🤝 Contribuição
 
-This project was built to demonstrate the power of Agentic AI in education tech. Feel free to submit Pull Requests!
+Este projeto foi construído para demonstrar o poder da IA Agêntica na tecnologia educacional. Sinta-se à vontade para enviar Pull Requests!

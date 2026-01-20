@@ -23,7 +23,7 @@ export default function SignInPage() {
         });
 
         if (res?.error) {
-            setError("Invalid email or password");
+            setError("Email ou senha inválidos");
         } else {
             router.push("/"); // Middleware or logic should redirect to role-based dashboard
         }
@@ -48,7 +48,7 @@ export default function SignInPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Senha</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -58,11 +58,11 @@ export default function SignInPage() {
                             />
                         </div>
                         {error && <p className="text-sm text-red-500">{error}</p>}
-                        <Button type="submit" className="w-full">Sign In</Button>
+                        <Button type="submit" className="w-full">Entrar</Button>
                     </form>
                 </CardContent>
                 <CardFooter className="justify-center">
-                    <p className="text-sm text-gray-500">Log in with your school credentials</p>
+                    <p className="text-sm text-gray-500">Entre com suas credenciais da escola</p>
                 </CardFooter>
             </Card>
         </div>

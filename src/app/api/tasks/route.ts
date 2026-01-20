@@ -47,9 +47,9 @@ export async function POST(req: Request) {
 
                 // Send WhatsApp
                 if (student.studentProfile?.phone) {
-                    const studentName = student.name?.split(" ")[0] || "Student";
+                    const studentName = student.name?.split(" ")[0] || "Aluno";
                     const taskLink = `${process.env.NEXTAUTH_URL}/student/tasks/${assignment.id}`;
-                    const message = `Hello ${studentName}! 🎓\nNew English Task available: *${theme}*\nLevel: ${level}\n\nAccess here: ${taskLink}`;
+                    const message = `Olá ${studentName}! 🎓\nNova tarefa de Inglês disponível: *${theme}*\nNível: ${level}\n\nAcesse aqui: ${taskLink}`;
 
                     await sendWhatsAppMessage(student.studentProfile.phone, message);
                 }

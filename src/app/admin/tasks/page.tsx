@@ -29,7 +29,7 @@ export default function TaskGeneratorPage() {
             const result = await generateTaskContent(formData.theme, formData.level);
             setGeneratedTask(result);
         } catch (error) {
-            alert("Error generating task. Make sure API Key is set.");
+            alert("Erro ao gerar tarefa. Verifique se a API Key está configurada.");
         } finally {
             setLoading(false);
         }
@@ -49,13 +49,13 @@ export default function TaskGeneratorPage() {
             });
 
             if (res.ok) {
-                alert("Task saved and distributed to matching students!");
+                alert("Tarefa salva e distribuída para os alunos compatíveis!");
                 setGeneratedTask(null);
             } else {
-                alert("Failed to save and distribute.");
+                alert("Falha ao salvar e distribuir.");
             }
         } catch (e) {
-            alert("Error saving.");
+            alert("Erro ao salvar.");
         } finally {
             setLoading(false);
         }
@@ -65,13 +65,13 @@ export default function TaskGeneratorPage() {
         <div className="grid gap-6 md:grid-cols-2">
             <Card>
                 <CardHeader>
-                    <CardTitle>Generate New Task</CardTitle>
+                    <CardTitle>Gerar Nova Tarefa</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                        <Label>Theme / Topic</Label>
+                        <Label>Tema / Tópico</Label>
                         <Input
-                            placeholder="e.g. Agronomia, Business Law"
+                            placeholder="ex: Agronomia, Direito Empresarial"
                             value={formData.theme}
                             onChange={(e) =>
                                 setFormData({ ...formData, theme: e.target.value })
@@ -79,7 +79,7 @@ export default function TaskGeneratorPage() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label>Target Level</Label>
+                        <Label>Nível Alvo</Label>
                         <Select
                             value={formData.level}
                             onValueChange={(val) => setFormData({ ...formData, level: val })}
@@ -101,7 +101,7 @@ export default function TaskGeneratorPage() {
                         className="w-full"
                         disabled={loading || !formData.theme}
                     >
-                        {loading ? "Processing..." : "Generate with AI"}
+                        {loading ? "Processando..." : "Gerar com IA"}
                     </Button>
                 </CardContent>
             </Card>
@@ -109,7 +109,7 @@ export default function TaskGeneratorPage() {
             {generatedTask && (
                 <Card className="h-full flex flex-col">
                     <CardHeader>
-                        <CardTitle>Preview: {generatedTask.title}</CardTitle>
+                        <CardTitle>Prévia: {generatedTask.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="flex-1 overflow-auto space-y-4">
                         <p className="text-gray-600 italic">
@@ -119,7 +119,7 @@ export default function TaskGeneratorPage() {
                             {generatedTask.content}
                         </div>
                         <div>
-                            <h4 className="font-semibold mb-2">Questions Preview:</h4>
+                            <h4 className="font-semibold mb-2">Prévia das Questões:</h4>
                             <ul className="list-disc pl-5">
                                 {generatedTask.questions?.map((q: any, i: number) => (
                                     <li key={i}>{q.question}</li>
@@ -129,7 +129,7 @@ export default function TaskGeneratorPage() {
                     </CardContent>
                     <CardFooter>
                         <Button className="w-full bg-green-600 hover:bg-green-700" onClick={handleSaveAndDistribute} disabled={loading}>
-                            Save & Distribute to {formData.level} Students
+                            Salvar e Distribuir para Alunos {formData.level}
                         </Button>
                     </CardFooter>
                 </Card>

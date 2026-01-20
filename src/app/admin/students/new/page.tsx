@@ -38,10 +38,10 @@ export default function NewStudentPage() {
                 router.push("/admin/students");
                 router.refresh();
             } else {
-                alert("Error creating student");
+                alert("Erro ao criar aluno");
             }
         } catch (e) {
-            alert("Something went wrong");
+            alert("Algo deu errado");
         } finally {
             setLoading(false);
         }
@@ -51,13 +51,13 @@ export default function NewStudentPage() {
         <div className="max-w-2xl mx-auto">
             <Card>
                 <CardHeader>
-                    <CardTitle>Register New Student</CardTitle>
+                    <CardTitle>Cadastrar Novo Aluno</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={onSubmit} className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="name">Full Name</Label>
+                                <Label htmlFor="name">Nome Completo</Label>
                                 <Input id="name" name="name" required />
                             </div>
                             <div className="space-y-2">
@@ -67,16 +67,16 @@ export default function NewStudentPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="phone">Phone (WhatsApp) e.g. 5511999999999</Label>
+                            <Label htmlFor="phone">Telefone (WhatsApp) ex: 5511999999999</Label>
                             <Input id="phone" name="phone" required placeholder="5511..." />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="level">English Level</Label>
+                                <Label htmlFor="level">Nível de Inglês</Label>
                                 <Select name="level" defaultValue="A1">
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select level" />
+                                        <SelectValue placeholder="Selecione o nível" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {["A1", "A2", "B1", "B2", "C1", "C2"].map((level) => (
@@ -88,18 +88,18 @@ export default function NewStudentPage() {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="interestArea">Interest / Theme</Label>
-                                <Input id="interestArea" name="interestArea" placeholder="e.g. Agronomia" required />
+                                <Label htmlFor="interestArea">Interesse / Tema</Label>
+                                <Input id="interestArea" name="interestArea" placeholder="ex: Agronomia" required />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="password">Initial Password</Label>
+                            <Label htmlFor="password">Senha Inicial</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
 
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Creating..." : "Create Student"}
+                            {loading ? "Criando..." : "Criar Aluno"}
                         </Button>
                     </form>
                 </CardContent>

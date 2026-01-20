@@ -19,7 +19,7 @@ export default async function AdminLayout({
         <div className="flex h-screen bg-gray-100">
             <aside className="w-64 bg-white shadow-md hidden md:block">
                 <div className="p-6 border-b">
-                    <h1 className="text-2xl font-bold text-gray-800">College Admin</h1>
+                    <h1 className="text-xl font-bold text-gray-800">College Admin</h1>
                 </div>
                 <nav className="p-4 space-y-2">
                     <Link
@@ -34,20 +34,20 @@ export default async function AdminLayout({
                         className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
                     >
                         <User size={20} />
-                        <span>Students</span>
+                        <span>Alunos</span>
                     </Link>
                     <Link
                         href="/admin/tasks"
                         className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
                     >
                         <BookOpen size={20} />
-                        <span>Tasks</span>
+                        <span>Tarefas</span>
                     </Link>
 
                     <div className="pt-8 text-red-500 hover:text-red-700">
                         <Link href="/api/auth/signout" className="flex items-center space-x-3 p-2">
                             <LogOut size={20} />
-                            <span>Sign Out</span>
+                            <span>Sair</span>
                         </Link>
                     </div>
                 </nav>
