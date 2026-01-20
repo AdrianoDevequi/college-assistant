@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Level {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String   // Hashed
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentProfile StudentProfile?
+  assignedTasks  StudentTask[]
+}
+
+model StudentProfile {
+  id          String @id @default(uuid())
+  userId      String @unique
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone       String // For WhatsApp integration
+  level       Level  @default(A1)
+  interestArea String? // e.g. "Agronomia", "Business"
+}
+
+model Task {
+  id           String @id @default(uuid())
+  theme        String // e.g. "Agronomia"
+  targetLevel  Level
+  content      String @db.Text // JSON or Markdown content from Gemini
+  generatedAt  DateTime @default(now())
+  
+  assignments  StudentTask[]
+}
+
+model StudentTask {
+  id        String   @id @default(uuid())
+  studentId String
+  student   User     @relation(fields: [studentId], references: [id])
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  
+  status    String   @default("PENDING") // PENDING, COMPLETED
+  sentAt    DateTime @default(now())
+  completedAt DateTime?
+}
