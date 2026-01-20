@@ -7,12 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  STUDENT
-  ADMIN
+model studentprofile {
+  id           String               @id
+  userId       String               @unique(map: "StudentProfile_userId_key")
+  phone        String
+  level        studentprofile_level @default(A1)
+  interestArea String?
+  user         user                 @relation(fields: [userId], references: [id], onDelete: Cascade, map: "StudentProfile_userId_fkey")
 }
 
-enum Level {
+model studenttask {
+  id          String    @id
+  studentId   String
+  taskId      String
+  status      String    @default("PENDING")
+  sentAt      DateTime  @default(now())
+  completedAt DateTime?
+  answers     String?   @db.Text
+  user        user      @relation(fields: [studentId], references: [id], map: "StudentTask_studentId_fkey")
+  task        task      @relation(fields: [taskId], references: [id], map: "StudentTask_taskId_fkey")
+
+  @@index([studentId], map: "StudentTask_studentId_fkey")
+  @@index([taskId], map: "StudentTask_taskId_fkey")
+}
+
+model systemsettings {
+  key   String @id
+  value String @db.Text
+}
+
+model task {
+  id          String           @id
+  theme       String
+  targetLevel task_targetLevel
+  content     String           @db.Text
+  generatedAt DateTime         @default(now())
+  studenttask studenttask[]
+}
+
+model taskautomation {
+  id        String               @id
+  theme     String
+  level     taskautomation_level
+  frequency String               @default("WEEKLY")
+  nextRun   DateTime             @default(now())
+  active    Boolean              @default(true)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime
+  dayOfWeek Int                  @default(1)
+  timeOfDay String               @default("09:00")
+}
+
+model user {
+  id             String          @id
+  name           String?
+  email          String          @unique(map: "User_email_key")
+  password       String
+  role           user_role       @default(STUDENT)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime
+  studentprofile studentprofile?
+  studenttask    studenttask[]
+}
+
+enum task_targetLevel {
   A1
   A2
   B1
@@ -21,65 +79,25 @@ enum Level {
   C2
 }
 
-model User {
-  id        String   @id @default(uuid())
-  name      String?
-  email     String   @unique
-  password  String   // Hashed
-  role      Role     @default(STUDENT)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  studentProfile StudentProfile?
-  assignedTasks  StudentTask[]
+enum taskautomation_level {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
 }
 
-model StudentProfile {
-  id          String @id @default(uuid())
-  userId      String @unique
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  phone       String // For WhatsApp integration
-  level       Level  @default(A1)
-  interestArea String? // e.g. "Agronomia", "Business"
+enum studentprofile_level {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
 }
 
-model Task {
-  id           String @id @default(uuid())
-  theme        String // e.g. "Agronomia"
-  targetLevel  Level
-  content      String @db.Text // JSON or Markdown content from Gemini
-  generatedAt  DateTime @default(now())
-  
-  assignments  StudentTask[]
-}
-
-model StudentTask {
-  id        String   @id @default(uuid())
-  studentId String
-  student   User     @relation(fields: [studentId], references: [id])
-  taskId    String
-  task      Task     @relation(fields: [taskId], references: [id])
-  
-  status    String   @default("PENDING") // PENDING, COMPLETED
-  answers   String?  @db.Text // JSON of student answers
-  sentAt    DateTime @default(now())
-  completedAt DateTime?
-}
-
-model SystemSettings {
-  key   String @id
-  value String @db.Text
-}
-
-model TaskAutomation {
-  id        String   @id @default(uuid())
-  theme     String
-  level     Level
-  frequency String   @default("WEEKLY") // Currently only WEEKLY
-  dayOfWeek Int      @default(1) // 0=Sunday, 1=Monday, etc.
-  timeOfDay String   @default("09:00") // HH:mm format
-  nextRun   DateTime @default(now())
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum user_role {
+  STUDENT
+  ADMIN
 }
