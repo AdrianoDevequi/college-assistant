@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Pencil } from 'lucide-react';
 
 export default function TaskGeneratorPage() {
     const [loading, setLoading] = useState(false);
@@ -22,6 +23,7 @@ export default function TaskGeneratorPage() {
         theme: "",
         level: "A2",
     });
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleGenerate = async () => {
         setLoading(true);
@@ -108,23 +110,74 @@ export default function TaskGeneratorPage() {
 
             {generatedTask && (
                 <Card className="h-full flex flex-col">
-                    <CardHeader>
-                        <CardTitle>Prévia: {generatedTask.title}</CardTitle>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-xl font-bold">
+                            {isEditing ? (
+                                <Input
+                                    value={generatedTask.title}
+                                    onChange={(e) => setGeneratedTask({ ...generatedTask, title: e.target.value })}
+                                    className="font-bold text-lg"
+                                />
+                            ) : (
+                                `Prévia: ${generatedTask.title}`
+                            )}
+                        </CardTitle>
+                        <Button variant="ghost" size="icon" onClick={() => setIsEditing(!isEditing)}>
+                            <Pencil className="h-4 w-4" />
+                        </Button>
                     </CardHeader>
                     <CardContent className="flex-1 overflow-auto space-y-4">
-                        <p className="text-gray-600 italic">
-                            {generatedTask.introduction}
-                        </p>
-                        <div className="prose bg-gray-50 p-4 rounded-md">
-                            {generatedTask.content}
-                        </div>
+                        {isEditing ? (
+                            <div className="space-y-4">
+                                <Label>Introdução</Label>
+                                <Textarea
+                                    value={generatedTask.introduction}
+                                    onChange={(e) => setGeneratedTask({ ...generatedTask, introduction: e.target.value })}
+                                    className="min-h-[80px]"
+                                />
+                                <Label>Texto Principal</Label>
+                                <Textarea
+                                    value={generatedTask.content}
+                                    onChange={(e) => setGeneratedTask({ ...generatedTask, content: e.target.value })}
+                                    className="min-h-[200px]"
+                                />
+                            </div>
+                        ) : (
+                            <>
+                                <p className="text-gray-600 italic">
+                                    {generatedTask.introduction}
+                                </p>
+                                <div className="prose bg-gray-50 p-4 rounded-md whitespace-pre-wrap">
+                                    {generatedTask.content}
+                                </div>
+                            </>
+                        )}
+
                         <div>
                             <h4 className="font-semibold mb-2">Prévia das Questões:</h4>
-                            <ul className="list-disc pl-5">
-                                {generatedTask.questions?.map((q: any, i: number) => (
-                                    <li key={i}>{q.question}</li>
-                                ))}
-                            </ul>
+                            {isEditing ? (
+                                <div className="space-y-2">
+                                    {generatedTask.questions?.map((q: any, i: number) => (
+                                        <div key={i} className="flex gap-2">
+                                            <span className="pt-2">{i + 1}.</span>
+                                            <Input
+                                                value={q.question}
+                                                onChange={(e) => {
+                                                    const newQuestions = [...generatedTask.questions];
+                                                    newQuestions[i].question = e.target.value;
+                                                    setGeneratedTask({ ...generatedTask, questions: newQuestions });
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <ul className="list-disc pl-5">
+                                    {generatedTask.questions?.map((q: any, i: number) => (
+                                        <li key={i}>{q.question}</li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </CardContent>
                     <CardFooter>

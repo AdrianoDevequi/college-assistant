@@ -1,17 +1,21 @@
 "use server";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+import { getSetting, SETTINGS_KEYS } from "@/lib/settings";
 
 export async function generateTaskContent(theme: string, level: string) {
-    if (!process.env.GEMINI_API_KEY) {
-        throw new Error("Missing GEMINI_API_KEY");
-    }
+  const apiKey = await getSetting(SETTINGS_KEYS.GEMINI_API_KEY);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  if (!apiKey) {
+    throw new Error("Missing GEMINI_API_KEY in Settings");
+  }
+  const genAI = new GoogleGenerativeAI(apiKey);
+  // Using 'gemini-flash-latest' as recommended in reference project (Pulo do Gato 🐈)
+  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
-    const prompt = `
+  console.log("[AI] Generating content using gemini-flash-latest. Key length:", apiKey.length);
+
+  const prompt = `
     You are an English Teacher for College students.
     Create a personalized English exercise task.
     
@@ -31,17 +35,17 @@ export async function generateTaskContent(theme: string, level: string) {
     Ensure the language difficulty matches the ${level} level exactly.
   `;
 
-    try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-        // Cleanup markdown code blocks if present
-        const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
+    // Cleanup markdown code blocks if present
+    const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
 
-        return JSON.parse(cleanText);
-    } catch (error) {
-        console.error("Gemini Error:", error);
-        throw new Error("Failed to generate content");
-    }
+    return JSON.parse(cleanText);
+  } catch (error) {
+    console.error("Gemini Error:", error);
+    throw new Error("Failed to generate content");
+  }
 }

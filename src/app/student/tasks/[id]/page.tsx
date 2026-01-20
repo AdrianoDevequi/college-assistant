@@ -1,5 +1,5 @@
 
-import { PrismaClient } from "@prisma/client";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { notFound, redirect } from "next/navigation";
@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import TaskQuestions from "./TaskQuestions";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+export const dynamic = "force-dynamic";
 
 async function getAssignment(id: string) {
     const session = await getServerSession(authOptions);
@@ -22,6 +24,11 @@ async function getAssignment(id: string) {
             student: true
         },
     });
+
+    if (assignment) {
+        console.log("Assignment Keys:", Object.keys(assignment));
+        console.log("Answers Field:", assignment.answers);
+    }
 
     if (!assignment) return null;
     if (assignment.student.email !== session.user.email) return null; // Security check
@@ -38,18 +45,14 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
     }
 
     const content = JSON.parse(assignment.task.content);
+    const savedAnswers = assignment.answers ? JSON.parse(assignment.answers) : {};
 
-    async function completeTask() {
-        "use server";
-        await prisma.studentTask.update({
-            where: { id },
-            data: {
-                status: "COMPLETED",
-                completedAt: new Date()
-            }
-        });
-        redirect("/student/tasks");
-    }
+    console.log("PAGE DEBUG:", {
+        id: assignment.id,
+        hasAnswersField: !!assignment.answers,
+        answersLength: assignment.answers?.length,
+        savedAnswersKeys: Object.keys(savedAnswers)
+    });
 
     return (
         <div className="space-y-6">
@@ -84,36 +87,13 @@ export default async function TaskDetailPage({ params }: { params: { id: string 
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Questões</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    {content.questions?.map((q: any, i: number) => (
-                        <div key={i} className="p-4 border rounded bg-white">
-                            <p className="font-semibold mb-2">{i + 1}. {q.question}</p>
-                            <ul className="list-disc pl-5 space-y-1">
-                                {q.options?.map((opt: string, j: number) => (
-                                    <li key={j} className="text-gray-600">{opt}</li>
-                                ))}
-                            </ul>
-                            {assignment.status === "COMPLETED" && (
-                                <div className="mt-3 text-green-600 text-sm font-medium">
-                                    Resposta Correta: {q.answer}
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
-
-            {assignment.status !== "COMPLETED" && (
-                <form action={completeTask} className="flex justify-end">
-                    <Button type="submit" size="lg" className="bg-green-600 hover:bg-green-700">
-                        Marcar como Concluída
-                    </Button>
-                </form>
-            )}
+            <TaskQuestions
+                content={content}
+                assignmentId={assignment.id}
+                initialStatus={assignment.status}
+                initialAnswers={savedAnswers}
+                rawAnswers={assignment.answers}
+            />
         </div>
     );
 }

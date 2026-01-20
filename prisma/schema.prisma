@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -60,6 +61,25 @@ model StudentTask {
   task      Task     @relation(fields: [taskId], references: [id])
   
   status    String   @default("PENDING") // PENDING, COMPLETED
+  answers   String?  @db.Text // JSON of student answers
   sentAt    DateTime @default(now())
   completedAt DateTime?
+}
+
+model SystemSettings {
+  key   String @id
+  value String @db.Text
+}
+
+model TaskAutomation {
+  id        String   @id @default(uuid())
+  theme     String
+  level     Level
+  frequency String   @default("WEEKLY") // Currently only WEEKLY
+  dayOfWeek Int      @default(1) // 0=Sunday, 1=Monday, etc.
+  timeOfDay String   @default("09:00") // HH:mm format
+  nextRun   DateTime @default(now())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

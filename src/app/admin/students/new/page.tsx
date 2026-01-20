@@ -25,6 +25,14 @@ export default function NewStudentPage() {
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData);
 
+        // Combine DDI and Phone
+        const ddi = data.ddi as string;
+        const rawPhone = data.phone as string;
+        // Remove formatting from phone (keep only numbers)
+        const cleanPhone = rawPhone.replace(/\D/g, "");
+
+        data.phone = `${ddi}${cleanPhone}`;
+
         try {
             const res = await fetch("/api/students", {
                 method: "POST",
@@ -67,8 +75,22 @@ export default function NewStudentPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="phone">Telefone (WhatsApp) ex: 5511999999999</Label>
-                            <Input id="phone" name="phone" required placeholder="5511..." />
+                            <Label htmlFor="phone">Telefone (WhatsApp)</Label>
+                            <div className="flex gap-2">
+                                <Select name="ddi" defaultValue="55">
+                                    <SelectTrigger className="w-[100px]">
+                                        <SelectValue placeholder="DDI" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="55">🇧🇷 +55</SelectItem>
+                                        <SelectItem value="1">🇺🇸 +1</SelectItem>
+                                        <SelectItem value="351">🇵🇹 +351</SelectItem>
+                                        <SelectItem value="54">🇦🇷 +54</SelectItem>
+                                        <SelectItem value="44">🇬🇧 +44</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Input id="phone" name="phone" required placeholder="11999999999" className="flex-1" />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">

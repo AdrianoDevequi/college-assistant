@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, BookOpen, LayoutDashboard, LogOut } from "lucide-react";
+import { User, BookOpen, LayoutDashboard, LogOut, Settings, History, Repeat } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -42,6 +42,28 @@ export default async function AdminLayout({
                     >
                         <BookOpen size={20} />
                         <span>Tarefas</span>
+                    </Link>
+                    <Link
+                        href="/admin/tasks/history"
+                        className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
+                    >
+                        <History size={20} />
+                        <span>Histórico</span>
+                    </Link>
+                    <Link
+                        href="/admin/automation"
+                        className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
+                    >
+                        <Repeat size={20} />
+                        <span>Automação</span>
+                    </Link>
+
+                    <Link
+                        href="/admin/settings"
+                        className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
+                    >
+                        <Settings size={20} />
+                        <span>Configurações</span>
                     </Link>
 
                     <div className="pt-8 text-red-500 hover:text-red-700">
