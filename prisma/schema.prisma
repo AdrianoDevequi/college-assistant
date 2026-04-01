@@ -12,6 +12,12 @@ enum Role {
   ADMIN
 }
 
+enum Plan {
+  FREE
+  PRO
+  UNLIMITED
+}
+
 enum Level {
   A1
   A2
@@ -27,6 +33,7 @@ model User {
   email     String   @unique
   password  String   // Hashed
   role      Role     @default(STUDENT)
+  plan      Plan     @default(FREE)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

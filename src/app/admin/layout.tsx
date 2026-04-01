@@ -19,7 +19,7 @@ export default async function AdminLayout({
         <div className="flex h-screen bg-gray-100">
             <aside className="w-64 bg-white shadow-md hidden md:block">
                 <div className="p-6 border-b">
-                    <h1 className="text-xl font-bold text-gray-800">College Admin</h1>
+                    <h1 className="text-xl font-bold text-gray-800">Language Assistant</h1>
                 </div>
                 <nav className="p-4 space-y-2">
                     <Link
