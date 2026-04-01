@@ -11,9 +11,9 @@ export async function generateTaskContent(theme: string, level: string) {
   }
   const genAI = new GoogleGenerativeAI(apiKey);
   // Using 'gemini-flash-latest' as recommended in reference project (Pulo do Gato 🐈)
-  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-  console.log("[AI] Generating content using gemini-flash-latest. Key length:", apiKey.length);
+  console.log("[AI] Generating content using gemini-2.0-flash. Key length:", apiKey.length);
 
   const prompt = `
     You are an English Teacher for College students.

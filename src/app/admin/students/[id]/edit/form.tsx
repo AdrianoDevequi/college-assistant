@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ToastProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function EditStudentForm({ student }: { student: any }) {
     const router = useRouter();
+    const toast = useToast();
     const [loading, setLoading] = useState(false);
 
     // Split phone into DDI and number if possible (simple heuristic)
@@ -63,11 +65,11 @@ export default function EditStudentForm({ student }: { student: any }) {
                 router.push("/admin/students");
                 router.refresh();
             } else {
-                alert("Erro ao atualizar aluno");
+                toast.error("Erro ao atualizar aluno");
                 console.error(await res.text());
             }
         } catch (e) {
-            alert("Algo deu errado");
+            toast.error("Algo deu errado");
         } finally {
             setLoading(false);
         }

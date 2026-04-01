@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useToast } from "@/components/ToastProvider";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -18,6 +19,7 @@ export default function TaskQuestions({ content, assignmentId, initialStatus, in
         return acc;
     }, {}) : {};
 
+    const toast = useToast();
     const [answers, setAnswers] = useState<Record<string, string>>(normalizedAnswers);
     const [submitting, setSubmitting] = useState(false);
 
@@ -31,7 +33,7 @@ export default function TaskQuestions({ content, assignmentId, initialStatus, in
 
     const handleSubmit = async () => {
         if (!isFormValid) {
-            alert("Por favor, responda todas as perguntas antes de enviar.");
+            toast.warning("Por favor, responda todas as perguntas antes de enviar.");
             return;
         }
 
@@ -42,7 +44,7 @@ export default function TaskQuestions({ content, assignmentId, initialStatus, in
             window.location.href = "/student/tasks";
         } catch (error) {
             console.error(error);
-            alert("Erro ao enviar respostas.");
+            toast.error("Erro ao enviar respostas.");
             setSubmitting(false);
         }
     };

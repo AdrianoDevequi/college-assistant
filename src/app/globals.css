@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+.animate-shrink {
+  animation: shrink 4s linear forwards;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { User, BookOpen, LayoutDashboard, LogOut, Settings, History, Repeat } from "lucide-react";
+import { BookOpen, LayoutDashboard, Settings, History, Repeat, User, BarChart3 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import UserMenu from "@/components/UserMenu";
 
 export default async function AdminLayout({
     children,
@@ -17,11 +18,12 @@ export default async function AdminLayout({
 
     return (
         <div className="flex h-screen bg-gray-100">
-            <aside className="w-64 bg-white shadow-md hidden md:block">
-                <div className="p-6 border-b">
-                    <h1 className="text-xl font-bold text-gray-800">Language Assistant</h1>
+            <aside className="w-64 bg-white shadow-md hidden md:flex flex-col">
+                <div className="p-6 border-b flex items-center gap-2">
+                    <BookOpen size={20} className="text-blue-600" />
+                    <h1 className="text-lg font-bold text-gray-800">Language Assistant</h1>
                 </div>
-                <nav className="p-4 space-y-2">
+                <nav className="p-4 space-y-1 flex-1">
                     <Link
                         href="/admin/dashboard"
                         className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
@@ -57,7 +59,13 @@ export default async function AdminLayout({
                         <Repeat size={20} />
                         <span>Automação</span>
                     </Link>
-
+                    <Link
+                        href="/admin/usage"
+                        className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
+                    >
+                        <BarChart3 size={20} />
+                        <span>Consumo</span>
+                    </Link>
                     <Link
                         href="/admin/settings"
                         className="flex items-center space-x-3 text-gray-700 p-2 rounded hover:bg-gray-100"
@@ -65,14 +73,16 @@ export default async function AdminLayout({
                         <Settings size={20} />
                         <span>Configurações</span>
                     </Link>
-
-                    <div className="pt-8 text-red-500 hover:text-red-700">
-                        <Link href="/api/auth/signout" className="flex items-center space-x-3 p-2">
-                            <LogOut size={20} />
-                            <span>Sair</span>
-                        </Link>
-                    </div>
                 </nav>
+
+                {/* User menu at bottom */}
+                <div className="p-4 border-t">
+                    <UserMenu
+                        name={session.user.name}
+                        email={session.user.email}
+                        plan={session.user.plan ?? "FREE"}
+                    />
+                </div>
             </aside>
             <main className="flex-1 p-8 overflow-y-auto">{children}</main>
         </div>

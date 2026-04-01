@@ -15,7 +15,7 @@ enum Role {
 enum Plan {
   FREE
   PRO
-  UNLIMITED
+  PREMIUM
 }
 
 enum Level {

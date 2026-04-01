@@ -209,7 +209,7 @@ export default async function Home() {
             <p className="text-gray-400 text-sm mb-8">por mês</p>
             <ul className="space-y-3 mb-10 flex-1">
               {[
-                "Até 50 tarefas criadas",
+                "Até 200 tarefas criadas",
                 "Tudo do plano Gratuito",
                 "Automação de tarefas",
                 "Notificações WhatsApp",
@@ -226,15 +226,15 @@ export default async function Home() {
             </Link>
           </div>
 
-          {/* Unlimited */}
+          {/* Premium */}
           <div className="flex flex-col p-8 border rounded-2xl shadow-sm bg-gray-900 text-white">
-            <h3 className="text-xl font-bold mb-1">Ilimitado</h3>
+            <h3 className="text-xl font-bold mb-1">Premium</h3>
             <p className="text-gray-400 text-sm mb-6">Para instituições e escolas</p>
             <p className="text-5xl font-extrabold mb-1">R$300</p>
             <p className="text-gray-400 text-sm mb-8">por mês</p>
             <ul className="space-y-3 mb-10 flex-1">
               {[
-                "Tarefas ilimitadas",
+                "Até 1.000 tarefas criadas",
                 "Tudo do plano Pro",
                 "Múltiplos professores",
                 "API de integração",
@@ -248,7 +248,7 @@ export default async function Home() {
             </ul>
             <Link href="/auth/signin">
               <Button variant="outline" className="w-full text-gray-900 bg-white hover:bg-gray-100 border-white">
-                Assinar Ilimitado
+                Assinar Premium
               </Button>
             </Link>
           </div>

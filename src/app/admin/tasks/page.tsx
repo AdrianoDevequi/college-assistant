@@ -15,14 +15,13 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Pencil } from 'lucide-react';
+import { useToast } from "@/components/ToastProvider";
 
 export default function TaskGeneratorPage() {
+    const toast = useToast();
     const [loading, setLoading] = useState(false);
-    const [generatedTask, setGeneratedTask] = useState<any>(null); // Ideally typed
-    const [formData, setFormData] = useState({
-        theme: "",
-        level: "A2",
-    });
+    const [generatedTask, setGeneratedTask] = useState<any>(null);
+    const [formData, setFormData] = useState({ theme: "", level: "A2" });
     const [isEditing, setIsEditing] = useState(false);
 
     const handleGenerate = async () => {
@@ -31,7 +30,7 @@ export default function TaskGeneratorPage() {
             const result = await generateTaskContent(formData.theme, formData.level);
             setGeneratedTask(result);
         } catch (error) {
-            alert("Erro ao gerar tarefa. Verifique se a API Key está configurada.");
+            toast.error("Erro ao gerar tarefa. Verifique se a API Key está configurada.");
         } finally {
             setLoading(false);
         }
@@ -51,13 +50,16 @@ export default function TaskGeneratorPage() {
             });
 
             if (res.ok) {
-                alert("Tarefa salva e distribuída para os alunos compatíveis!");
+                toast.success(
+                    `Tarefa distribuída para os alunos nível ${formData.level}!`,
+                    { label: "Ver alunos", href: `/admin/students?level=${formData.level}` }
+                );
                 setGeneratedTask(null);
             } else {
-                alert("Falha ao salvar e distribuir.");
+                toast.error("Falha ao salvar e distribuir.");
             }
         } catch (e) {
-            alert("Erro ao salvar.");
+            toast.error("Erro ao salvar.");
         } finally {
             setLoading(false);
         }
@@ -75,9 +77,7 @@ export default function TaskGeneratorPage() {
                         <Input
                             placeholder="ex: Agronomia, Direito Empresarial"
                             value={formData.theme}
-                            onChange={(e) =>
-                                setFormData({ ...formData, theme: e.target.value })
-                            }
+                            onChange={(e) => setFormData({ ...formData, theme: e.target.value })}
                         />
                     </div>
                     <div className="space-y-2">
@@ -91,18 +91,12 @@ export default function TaskGeneratorPage() {
                             </SelectTrigger>
                             <SelectContent>
                                 {["A1", "A2", "B1", "B2", "C1", "C2"].map((l) => (
-                                    <SelectItem key={l} value={l}>
-                                        {l}
-                                    </SelectItem>
+                                    <SelectItem key={l} value={l}>{l}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
-                    <Button
-                        onClick={handleGenerate}
-                        className="w-full"
-                        disabled={loading || !formData.theme}
-                    >
+                    <Button onClick={handleGenerate} className="w-full" disabled={loading || !formData.theme}>
                         {loading ? "Processando..." : "Gerar com IA"}
                     </Button>
                 </CardContent>
@@ -144,15 +138,10 @@ export default function TaskGeneratorPage() {
                             </div>
                         ) : (
                             <>
-                                <p className="text-gray-600 italic">
-                                    {generatedTask.introduction}
-                                </p>
-                                <div className="prose bg-gray-50 p-4 rounded-md whitespace-pre-wrap">
-                                    {generatedTask.content}
-                                </div>
+                                <p className="text-gray-600 italic">{generatedTask.introduction}</p>
+                                <div className="prose bg-gray-50 p-4 rounded-md whitespace-pre-wrap">{generatedTask.content}</div>
                             </>
                         )}
-
                         <div>
                             <h4 className="font-semibold mb-2">Prévia das Questões:</h4>
                             {isEditing ? (
